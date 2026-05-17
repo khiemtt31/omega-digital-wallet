@@ -41,3 +41,7 @@ The project is reliable and easy to explain.
 
 - Main flows are covered by tests.
 - Another person can run the project from the docs.
+
+## Reference docs
+
+- [Fullstack coding style and cross-layer coordination](./agent-skills/llm-coding-style-fullstack.md)

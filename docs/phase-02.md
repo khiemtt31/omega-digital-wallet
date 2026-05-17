@@ -41,3 +41,8 @@ Angular can talk to the backend.
 
 - The API can be called from Postman or curl.
 - All wallet actions are exposed as REST endpoints.
+
+## Reference docs
+
+- [Backend coding style and core business reminders](./agent-skills/llm-coding-style-backend.md)
+- [Bruno testing guide](./agent-skills/bruno-testing.md)

@@ -42,3 +42,8 @@ External payment flows are simulated safely.
 
 - A full fake payment flow works end to end.
 - No real charges are created.
+
+## Reference docs
+
+- [Backend coding style and core business reminders](./agent-skills/llm-coding-style-backend.md)
+- [Bruno testing guide](./agent-skills/bruno-testing.md)

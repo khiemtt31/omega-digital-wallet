@@ -40,3 +40,7 @@ A user can use the wallet in a browser.
 ## Done when
 
 - A user can view a wallet and perform actions from the UI.
+
+## Reference docs
+
+- [Angular frontend coding style and UI/state rules](./agent-skills/llm-coding-style-frontend.md)

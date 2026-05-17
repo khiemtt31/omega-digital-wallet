@@ -41,3 +41,7 @@ Practice distributed-system patterns.
 ## Done when
 
 - Async event handling works without breaking the core wallet flow.
+
+## Reference docs
+
+- [Backend coding style and core business reminders](./agent-skills/llm-coding-style-backend.md)

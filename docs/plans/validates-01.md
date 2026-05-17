@@ -13,7 +13,7 @@ Turn Phase 01 into an executable runbook for an implementation agent and a futur
 ## Preconditions
 
 - `docs/phase-01.md` is approved.
-- `docs/agent-skills/llm-coding-style.md` and `docs/agent-skills/bruno-testing.md` are available.
+- `docs/agent-skills/llm-coding-style-backend.md` and `docs/agent-skills/bruno-testing.md` are available.
 - The HTTP status-code and error-body policy is fixed before Bruno files are written.
 
 ## Execution order

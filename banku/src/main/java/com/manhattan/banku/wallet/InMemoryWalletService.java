@@ -1,24 +1,22 @@
 package com.manhattan.banku.wallet;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.springframework.stereotype.Service;
 
 /**
- * Phase 0 in-memory wallet implementation.
+ * Phase 01 in-memory wallet implementation.
  */
-@Service
 public class InMemoryWalletService implements WalletService {
 
     private static final String WALLET_ALREADY_EXISTS_MESSAGE = "Wallet already exists";
     private static final String WALLET_DOES_NOT_EXIST_MESSAGE = "Wallet does not exist";
     private static final String WALLET_ID_CANNOT_BE_BLANK_MESSAGE = "Wallet ID cannot be blank";
     private static final String AMOUNT_MUST_BE_POSITIVE_MESSAGE = "Amount in cents must be positive";
+    private static final String WALLET_BALANCE_OVERFLOW_MESSAGE = "Wallet balance overflow";
     private static final String INSUFFICIENT_FUNDS_MESSAGE = "Insufficient funds";
     private static final String DIFFERENT_WALLETS_REQUIRED_MESSAGE = "Source and destination wallets must be different";
 
-    private final Map<String, Wallet> wallets = new ConcurrentHashMap<>();
+    private final Map<String, Wallet> wallets = new HashMap<>();
     private final Object lock = new Object();
 
     @Override
@@ -39,13 +37,15 @@ public class InMemoryWalletService implements WalletService {
     @Override
     public Wallet getWallet(String walletId) {
         String normalizedWalletId = requireWalletId(walletId);
-        Wallet wallet = wallets.get(normalizedWalletId);
+        synchronized (lock) {
+            Wallet wallet = wallets.get(normalizedWalletId);
 
-        if (wallet == null) {
-            throw new IllegalArgumentException(WALLET_DOES_NOT_EXIST_MESSAGE);
+            if (wallet == null) {
+                throw new IllegalArgumentException(WALLET_DOES_NOT_EXIST_MESSAGE);
+            }
+
+            return wallet;
         }
-
-        return wallet;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class InMemoryWalletService implements WalletService {
         synchronized (lock) {
             Wallet currentWallet = requireExistingWallet(normalizedWalletId);
             Wallet updatedWallet = new Wallet(normalizedWalletId,
-                    Math.addExact(currentWallet.balanceInCents(), amountInCents));
+                    addBalance(currentWallet.balanceInCents(), amountInCents));
             wallets.put(normalizedWalletId, updatedWallet);
             return updatedWallet;
         }
@@ -102,7 +102,7 @@ public class InMemoryWalletService implements WalletService {
             Wallet updatedFromWallet = new Wallet(normalizedFromWalletId,
                     Math.subtractExact(fromWallet.balanceInCents(), amountInCents));
             Wallet updatedToWallet = new Wallet(normalizedToWalletId,
-                    Math.addExact(toWallet.balanceInCents(), amountInCents));
+                    addBalance(toWallet.balanceInCents(), amountInCents));
 
             wallets.put(normalizedFromWalletId, updatedFromWallet);
             wallets.put(normalizedToWalletId, updatedToWallet);
@@ -120,6 +120,14 @@ public class InMemoryWalletService implements WalletService {
     private static void requirePositiveAmount(long amountInCents) {
         if (amountInCents <= 0L) {
             throw new IllegalArgumentException(AMOUNT_MUST_BE_POSITIVE_MESSAGE);
+        }
+    }
+
+    private static long addBalance(long balanceInCents, long amountInCents) {
+        try {
+            return Math.addExact(balanceInCents, amountInCents);
+        } catch (ArithmeticException exception) {
+            throw new IllegalArgumentException(WALLET_BALANCE_OVERFLOW_MESSAGE, exception);
         }
     }
 

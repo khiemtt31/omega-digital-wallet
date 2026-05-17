@@ -40,3 +40,7 @@ Data survives restarts.
 
 - Wallet data is no longer only in memory.
 - Balance is calculated from stored entries.
+
+## Reference docs
+
+- [Backend coding style and core business reminders](./agent-skills/llm-coding-style-backend.md)

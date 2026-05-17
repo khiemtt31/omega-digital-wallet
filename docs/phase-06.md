@@ -42,3 +42,7 @@ The app feels like a real banking system.
 
 - Protected routes require authentication.
 - Sensitive actions are authorized.
+
+## Reference docs
+
+- [Fullstack coding style and cross-layer coordination](./agent-skills/llm-coding-style-fullstack.md)
